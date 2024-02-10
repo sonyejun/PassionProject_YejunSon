@@ -1,0 +1,14 @@
+﻿
+@model IEnumerable<PassionProject_YejunSon.Models.User>
+@{
+    ViewBag.Title = "List";
+}
+
+<h2>Users List</h2>
+<a href="/user/new" style="font-size: 20px">Create User</a>
+@foreach(var user in Model)
+{   
+    <ul>
+        <li><a href="/User/Details/@user.UserId">@user.FristName @user.LastName</a></li>
+    </ul>
+}
