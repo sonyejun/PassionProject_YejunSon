@@ -34,8 +34,10 @@ namespace PassionProject_YejunSon.Models
     public class RestaurantDto
     {
         public int RestaurantId { get; set; }
-        public int RestaurantName { get; set; }
+        public string RestaurantName { get; set; }
+        public string Location { get; set; }
+        public int Rate { get; set; }
+        public string Description { get; set; }
         public int UserId { get; set; }
-
     }
 }

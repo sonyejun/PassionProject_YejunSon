@@ -24,4 +24,11 @@ namespace PassionProject_YejunSon.Models
         //A RestaurantsFolder can take of many Restaurants
         public ICollection<Restaurant> Restaurants { get; set; }
     }
+
+    public class RestaurantsFolderDto
+    {
+        public int RestaurantsFolderId { get; set; }
+        public string FolderName { get; set; }
+        public int UserId { get; set; }
+    }
 }

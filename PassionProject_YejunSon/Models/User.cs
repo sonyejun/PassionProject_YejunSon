@@ -11,7 +11,7 @@ namespace PassionProject_YejunSon.Models
         [Key]
         public int UserId { get; set; }
 
-        public string FristName { get; set; }
+        public string FirstName { get; set; }
 
         public string LastName { get; set; }
 
@@ -20,5 +20,10 @@ namespace PassionProject_YejunSon.Models
 
         //A user can take care of many restaurantsFolders
         public ICollection<RestaurantsFolder> RestaurantsFolders { get; set; }
+
+        internal bool Any(Func<object, bool> value)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -1,0 +1,10 @@
+﻿@model PassionProject_YejunSon.Models.RestaurantDto
+@{
+    ViewBag.Title = "Details";
+}
+<a href="/User/Details/@Model.UserId">Go back to User Details</a>
+<h2>@Model.RestaurantName</h2>
+<br />
+<h3>Location: @Model.Location</h3>
+<h3>Rate: @Model.Rate</h3>
+<h3>Description: @Model.Description</h3>

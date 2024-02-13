@@ -5,7 +5,31 @@
 }
 
 <a href="/User/list">Go back to list</a>
+<a href="/User/list">Creating a Folder</a>
+<a href="/User/list">Creating a Restaurant</a>
 <br />
 
 <h2>@Model.SelectedUser.FirstName @Model.SelectedUser.LastName</h2>
+<br />
+
+<h4>Folders List</h4>
+<ul>
+    @foreach (var folder in Model.RegisteredRestaurantsFolders)
+    {
+
+        <li>
+            <a href="/RestaurantsFolder/Details/@Model.SelectedUser.UserId/@folder.RestaurantsFolderId">@folder.FolderName</a>
+        </li>
+    }
+</ul>
+
+<h4>Restaurants List</h4>
+<ul>
+    @foreach (var restaurant in Model.RegisteredRestaurants)
+    {
+        <li>
+            <a href="/Restaurant/Details/@Model.SelectedUser.UserId/@restaurant.RestaurantId">@restaurant.RestaurantName</a>
+        </li>
+    }
+</ul>
 

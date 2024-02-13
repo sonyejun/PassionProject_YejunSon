@@ -69,7 +69,6 @@ namespace PassionProject_YejunSon.Controllers
             {
                 return RedirectToAction("error");
             }
-
         }
 
         
@@ -91,18 +90,20 @@ namespace PassionProject_YejunSon.Controllers
             //RestaurantsFolders
             url = "RestaurantsFolderData/ListRestaurantsFolders/"+id;
             response = client.GetAsync(url).Result;
-            IEnumerable<RestaurantsFolder> RestaurantsFolders = response.Content.ReadAsAsync<IEnumerable<RestaurantsFolder>>().Result;
+            IEnumerable<RestaurantsFolderDto> RestaurantsFolders = response.Content.ReadAsAsync<IEnumerable<RestaurantsFolderDto>>().Result;
 
-            ViewModel.RegisteredRestaurantsFolder = RestaurantsFolders;
+            ViewModel.RegisteredRestaurantsFolders = RestaurantsFolders;
 
             //Restaurants
-            url = "RestaurantsData/ListRestaurants/" + id;
+            url = "RestaurantData/ListRestaurants/" + id;
             response = client.GetAsync(url).Result;
+
             IEnumerable<RestaurantDto> RegisteredRestaurants = response.Content.ReadAsAsync<IEnumerable<RestaurantDto>>().Result;
 
             ViewModel.RegisteredRestaurants = RegisteredRestaurants;
 
             return View(ViewModel);
         }
+ 
     }
 }

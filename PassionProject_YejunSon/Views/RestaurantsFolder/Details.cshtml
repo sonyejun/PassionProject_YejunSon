@@ -1,0 +1,20 @@
+﻿
+@model PassionProject_YejunSon.Models.ViewModels.DatailsRestaurantsFolder
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<a href="/User/Details/@Model.SelectedFolder.UserId">Go back to User Details</a>
+<h2>@Model.SelectedFolder.FolderName</h2>
+<hr />
+<h4>List of connected restaurants</h4>
+<ul>
+    @foreach (var restaurant in Model.FolderRestaurants)
+    {
+
+        <li>
+            <a href="/Restaurant/Details/@Model.SelectedFolder.UserId/@restaurant.RestaurantId">@restaurant.RestaurantName</a>
+        </li>
+    }
+</ul>

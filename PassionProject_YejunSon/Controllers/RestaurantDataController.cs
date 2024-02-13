@@ -1,10 +1,13 @@
-﻿using PassionProject_YejunSon.Models;
+﻿using PassionProject_YejunSon.Migrations;
+using PassionProject_YejunSon.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Description;
 
 namespace PassionProject_YejunSon.Controllers
 {
@@ -28,10 +31,97 @@ namespace PassionProject_YejunSon.Controllers
         {
             //sending a query to the database
             //select * from Restaurants...
-            List<Restaurant> Restaurants = db.Restaurants.Where(a => a.UserId == id).ToList();
+            List<Restaurant> Restaurants = db.Restaurants.Where(R => R.UserId == id).ToList();
+            List<RestaurantDto> RestaurantDtos = new List<RestaurantDto>();
+
+            Restaurants.ForEach(R => RestaurantDtos.Add(new RestaurantDto()
+            {
+                RestaurantId = R.RestaurantId,
+                RestaurantName = R.RestaurantName,
+                Location = R.Location,
+                Rate = R.Rate,
+                Description = R.Description,
+                UserId = R.UserId
+            }));
+            //push the results to the list of Restaurants to return
+            return Ok(RestaurantDtos);
+        }
+
+        /// <summary>
+        /// Grthers informatioon about Restaurants related to a particular Folder
+        /// </summary>
+        /// <returns>
+        /// HEADER: 200(Ok)
+        /// CONTENT: Returns all restaurants in a database associated with a particular folder
+        /// </returns>
+        /// <example>
+        /// GET: api/RestaurantData/ListRestaurantsforFolder/4
+        /// </example>
+        [HttpGet]
+        public IHttpActionResult ListRestaurantsforFolder(int id)
+        {
+            //sending a query to the database
+            //select * from Restaurants...
+            List<Restaurant> Restaurants = db.Restaurants.Where(
+                R => R.RestaurantsFolders.Any(
+                    F=>F.RestaurantsFolderId == id
+                )).ToList();
+
+            List<RestaurantDto> RestaurantDtos = new List<RestaurantDto>();
+
+            Restaurants.ForEach(R => RestaurantDtos.Add(new RestaurantDto()
+            {
+                RestaurantId = R.RestaurantId,
+                RestaurantName = R.RestaurantName,
+                Location = R.Location,
+                Rate = R.Rate,
+                Description = R.Description,
+                UserId = R.UserId
+            }));
 
             //push the results to the list of Restaurants to return
-            return Ok(Restaurants);
+            return Ok(RestaurantDtos);
+        }
+
+        /// <summary>
+        /// return a Restaurant to the system
+        /// </summary>
+        /// <returns>
+        /// HEADER: 200(Ok)
+        /// CONTENT: A Restaurant in the system matching up to the Restaurant id primary key
+        /// or
+        /// HEADER: 404(Not Found)
+        /// </returns>
+        /// <param name="id">The primary key of the Restaurant</param>
+        /// <example>
+        /// Get: api/RestaurantData/FindRestaurant/3/4
+        /// </example>
+        [ResponseType(typeof(Restaurant))]
+        [HttpGet]
+        public IHttpActionResult FindRestaurant(int id, int id2)
+        {
+            Restaurant Restaurant = db.Restaurants.Where(
+                R => R.UserId == id && R.RestaurantId == id2)
+            .FirstOrDefault();
+
+            if (Restaurant == null)
+            {
+                return NotFound();
+            }
+
+            RestaurantDto RestaurantDto = new RestaurantDto()
+            {
+                RestaurantId = Restaurant.RestaurantId,
+                RestaurantName = Restaurant.RestaurantName,
+                Location = Restaurant.Location,
+                Rate = Restaurant.Rate,
+                Description = Restaurant.Description,
+                UserId = Restaurant.UserId
+            };
+            Debug.WriteLine(RestaurantDto.RestaurantId);
+            Debug.WriteLine(RestaurantDto.RestaurantId);
+            Debug.WriteLine(RestaurantDto.RestaurantId);
+            return Ok(RestaurantDto);
         }
     }
 }
