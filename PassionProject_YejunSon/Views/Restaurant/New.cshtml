@@ -1,0 +1,28 @@
+﻿
+@{
+    ViewBag.Title = "New";
+}
+<a href="/User/Details/@ViewBag.UserId">Go back to User Details</a>
+
+<h2>Create Restaurant</h2>
+
+<form action="/Restaurant/Create" method="post">
+    <div>
+        <label>Restaurant Name:</label>
+        <input type="text" name="RestaurantName" value="" />
+    </div>
+    <div>
+        <label>Location:</label>
+        <input type="text" name="Location" value="" />
+    </div>
+    <div>
+        <label>Rate:</label>
+        <input type="number" name="Rate" value="" />
+    </div>
+    <div>
+        <label>Description:</label>
+        <textarea name="Description"></textarea>
+    </div>
+    <input type="hidden" name="UserId" value="@ViewBag.UserId" />
+    <input type="submit" value="Add Restaurant" />
+</form>

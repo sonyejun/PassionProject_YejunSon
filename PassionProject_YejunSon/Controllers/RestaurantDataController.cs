@@ -2,6 +2,8 @@
 using PassionProject_YejunSon.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
+using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -118,10 +120,125 @@ namespace PassionProject_YejunSon.Controllers
                 Description = Restaurant.Description,
                 UserId = Restaurant.UserId
             };
-            Debug.WriteLine(RestaurantDto.RestaurantId);
-            Debug.WriteLine(RestaurantDto.RestaurantId);
-            Debug.WriteLine(RestaurantDto.RestaurantId);
             return Ok(RestaurantDto);
+        }
+
+        /// <summary>
+        /// Add a Restaurant to the system
+        /// </summary>
+        /// <param name="Restaurant">JSON FORM DATA of a Restaurant</param>
+        /// <returns>
+        /// HEADER: 201(Created)
+        /// CONTENT: Restaurant ID, Restaurant Data
+        /// or
+        /// HEADER: 400(Bad Request)
+        /// </returns>
+        /// <example>
+        /// POST: api/RestaurantData/AddRestaurant
+        /// </example>
+        [ResponseType(typeof(Restaurant))]
+        [HttpPost]
+        public IHttpActionResult AddRestaurant(Restaurant Restaurant)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            db.Restaurants.Add(Restaurant);
+            db.SaveChanges();
+
+            return CreatedAtRoute("DefaultApi", new { id = Restaurant.UserId }, Restaurant);
+        }
+
+        /// <summary>
+        /// Deletes a Restaurant from the system by it's ID.
+        /// </summary>
+        /// <param name="id">The primary key of the Restaurant</param>
+        /// <returns>
+        /// HEADER: 200 (OK)
+        /// or
+        /// HEADER: 404 (NOT FOUND)
+        /// </returns>
+        /// <example>
+        /// POST: api/RestaurantData/DeleteRestaurant/5
+        /// FORM DATA: (empty)
+        /// </example>
+        [ResponseType(typeof(Restaurant))]
+        [HttpPost]
+        public IHttpActionResult DeleteRestaurant(int id)
+        {
+            Restaurant Restaurant = db.Restaurants.Find(id);
+            if (Restaurant == null)
+            {
+                return NotFound();
+            }
+
+            db.Restaurants.Remove(Restaurant);
+            db.SaveChanges();
+
+            return Ok();
+        }
+
+        /// <summary>
+        /// Updates a particular Restaurant in the system with POST Data input
+        /// </summary>
+        /// <param name="id">Represents the Restaurant ID primary key</param>
+        /// <param name="Restaurant">JSON FORM DATA of an Restaurant</param>
+        /// <returns>
+        /// HEADER: 204 (Success, No Content Response)
+        /// or
+        /// HEADER: 400 (Bad Request)
+        /// or
+        /// HEADER: 404 (Not Found)
+        /// </returns>
+        /// <example>
+        /// POST: api/RestaurantData/UpdateRestaurant/5
+        /// FORM DATA: Species JSON Object
+        /// </example>
+        [ResponseType(typeof(void))]
+        [HttpPost]
+        public IHttpActionResult UpdateRestaurant(int id, Restaurant Restaurant)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            if (id != Restaurant.RestaurantId)
+            {
+                return BadRequest();
+            }
+
+            db.Entry(Restaurant).State = EntityState.Modified;
+
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!RestaurantExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+        private bool RestaurantExists(int id)
+        {
+            return db.Restaurants.Count(e => e.RestaurantId == id) > 0;
         }
     }
 }

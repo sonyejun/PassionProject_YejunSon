@@ -1,0 +1,25 @@
+﻿@{
+    ViewBag.Title = "DeleteConfirm";
+}
+
+<a href="/RestaurantsFolder/Details/@Model.SelectedFolder.UserId/@Model.SelectedFolder.RestaurantsFolderId">Go back to Folder Details</a>
+<h2>Are you sure you want to delete this Restaurant?</h2>
+<h2>@Model.SelectedFolder.FolderName</h2>
+
+<form action="/RestaurantsFolder/Delete/@Model.SelectedFolder.UserId/@Model.SelectedFolder.RestaurantsFolderId" method="POST">
+    <input type="submit" value="Confirm Delete" />
+</form>
+
+<hr />
+<h4>List of connected restaurants</h4>
+<ul>
+    @foreach (var restaurant in Model.FolderRestaurants)
+    {
+        <li>
+            <h5 style="color:#fc8300">@restaurant.RestaurantName</h5>
+            <div>Location: @restaurant.Location</div>
+            <div>Rate: @restaurant.Rate</div>
+            <div>Description: @restaurant.Description</div>
+        </li>
+    }
+</ul>

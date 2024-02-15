@@ -4,9 +4,9 @@
     ViewBag.Title = "Details";
 }
 
-<a href="/User/list">Go back to list</a>
-<a href="/User/list">Creating a Folder</a>
-<a href="/User/list">Creating a Restaurant</a>
+<a href="/User/list">Go back to User list</a>
+<a href="/RestaurantsFolder/New/@Model.SelectedUser.UserId">Creating a Folder</a>
+<a href="/Restaurant/New/@Model.SelectedUser.UserId">Creating a Restaurant</a>
 <br />
 
 <h2>@Model.SelectedUser.FirstName @Model.SelectedUser.LastName</h2>

@@ -1,0 +1,31 @@
+﻿@model IEnumerable<PassionProject_YejunSon.Models.RestaurantDto>
+@{
+    ViewBag.Title = "New";
+}
+
+<a href="/User/Details/@ViewBag.UserId">Go back to User Details</a>
+
+<h2>Create Restaurant Folder</h2>
+
+<form action="/RestaurantsFolder/Create" method="post">
+    <div>
+        <label>Folder Name:</label>
+        <input type="text" name="FolderName" value="" />
+    </div>
+    <input type="hidden" name="UserId" value="@ViewBag.UserId" />
+    <br />
+    <div>
+        <h4>Select the restaurants to connect.</h4>
+        @foreach (var restaurant in Model)
+        {
+            <div>
+                <label>
+                    <input type="checkbox" name="RestaurantIds" value="@restaurant.RestaurantId" />
+                    @restaurant.RestaurantName
+                </label>
+            </div>
+        }
+    </div>
+    <br />
+    <input type="submit" value="Add Restaurant Folder" />
+</form>

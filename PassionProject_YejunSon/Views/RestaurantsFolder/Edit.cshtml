@@ -1,0 +1,36 @@
+﻿@model PassionProject_YejunSon.Models.ViewModels.EditRestaurantsFolder
+@{
+    ViewBag.Title = "Edit";
+}
+
+<a href="/User/Details/@Model.SelectedFolder.UserId">Go back to User Details</a>
+
+<h2>Update Restaurant Folder</h2>
+
+<form action="/RestaurantsFolder/Update/@Model.SelectedFolder.RestaurantsFolderId" method="post">
+    <input type="hidden" name="RestaurantsFolderId" value="@Model.SelectedFolder.RestaurantsFolderId" />
+    <div>
+        <label>Folder Name:</label>
+        <input type="text" name="FolderName" value="@Model.SelectedFolder.FolderName" />
+    </div>
+    <input type="hidden" name="UserId" value="@Model.SelectedFolder.UserId" />
+
+    <br />
+
+    <div>
+        <h4>Select the restaurants to connect.</h4>
+        @foreach (var restaurant in Model.RegisteredRestaurants)
+        {
+            <div>
+                <label>
+                    <input type="checkbox" name="RestaurantIds" value="@restaurant.RestaurantId"
+                           @(Model.FolderRestaurants.Any(F => F.RestaurantId == restaurant.RestaurantId) ? "checked" : "") />
+                    @restaurant.RestaurantName
+                </label>
+            </div>
+        }
+    </div>
+
+    <br />
+    <input type="submit" value="Add Restaurant Folder" />
+</form>

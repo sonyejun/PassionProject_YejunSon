@@ -48,6 +48,7 @@ namespace PassionProject_YejunSon.Controllers
             return View();
         }
 
+        // Post: User/Create
         [HttpPost]
         public ActionResult Create(User user)
         {

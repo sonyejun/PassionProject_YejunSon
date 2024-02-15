@@ -1,0 +1,30 @@
+﻿@model PassionProject_YejunSon.Models.RestaurantDto
+
+@{
+    ViewBag.Title = "Edit";
+}
+<a href="/User/Details/@Model.UserId">Go back to User Details</a>
+<h2>Update Restaurant</h2>
+<br />
+<form action="/Restaurant/Update/@Model.RestaurantId" method="POST">
+    @* Pass through the Restaurant ID *@
+    <input type="hidden" name="RestaurantId" value="@Model.RestaurantId" />
+    <div>
+        <label>Restaurant Name:</label> <input type="text" name="RestaurantName" value="@Model.RestaurantName" />
+    </div>
+    <div>
+        <label>Location:</label> <input type="text" name="Location" value="@Model.Location" />
+    </div>
+    <div>
+        <label>Rate:</label> <input type="number" name="Rate" value="@Model.Rate" />
+    </div>
+    <div>
+        <label>Description:</label>
+        <textarea name="Description">@Model.Description</textarea>
+    </div>
+    @* Pass through the User ID *@
+    <input type="hidden" name="UserId" value="@Model.UserId" />
+    <div>
+        <input type="submit" value="Update Restaurant" />
+    </div>
+</form>

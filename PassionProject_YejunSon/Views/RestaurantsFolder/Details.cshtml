@@ -7,14 +7,20 @@
 
 <a href="/User/Details/@Model.SelectedFolder.UserId">Go back to User Details</a>
 <h2>@Model.SelectedFolder.FolderName</h2>
+
+<a href="/RestaurantsFolder/Edit/@Model.SelectedFolder.UserId/@Model.SelectedFolder.RestaurantsFolderId">Edit RestaurantsFolder</a>
+<a href="/RestaurantsFolder/deleteConfirm/@Model.SelectedFolder.UserId/@Model.SelectedFolder.RestaurantsFolderId">Delete RestaurantsFolder</a>
+
 <hr />
-<h4>List of connected restaurants</h4>
+<h3>List of connected restaurants</h3>
 <ul>
     @foreach (var restaurant in Model.FolderRestaurants)
     {
-
         <li>
-            <a href="/Restaurant/Details/@Model.SelectedFolder.UserId/@restaurant.RestaurantId">@restaurant.RestaurantName</a>
+            <h5 style="color:#fc8300">@restaurant.RestaurantName</h5>
+            <div>Location: @restaurant.Location</div>
+            <div>Rate: @restaurant.Rate</div>
+            <div>Description: @restaurant.Description</div>
         </li>
     }
 </ul>
