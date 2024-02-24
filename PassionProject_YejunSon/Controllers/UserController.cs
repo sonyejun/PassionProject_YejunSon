@@ -105,6 +105,86 @@ namespace PassionProject_YejunSon.Controllers
 
             return View(ViewModel);
         }
- 
+
+        // GET: User/Edit/4
+        public ActionResult Edit(int id)
+        {
+            //objective: communicate with our user data api to retrieve one User
+            //curl https://localhost:44360/api/UserData/FindUser/{id}
+            string url = "UserData/FindUser/" + id;
+            HttpResponseMessage response = client.GetAsync(url).Result;
+
+            User User = response.Content.ReadAsAsync<User>().Result;
+
+            return View(User);
+        }
+
+        // POST: User/Update/5
+        [HttpPost]
+        public ActionResult Update(int id, User User)
+        {
+            string url = "UserData/UpdateUser/" + id;
+            string jsonpayload = jss.Serialize(User);
+            HttpContent content = new StringContent(jsonpayload);
+            content.Headers.ContentType.MediaType = "application/json";
+            HttpResponseMessage response = client.PostAsync(url, content).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("List");
+            }
+            else
+            {
+                return RedirectToAction("Error");
+            }
+        }
+
+        // GET: User/DeleteConfirm/5
+        public ActionResult DeleteConfirm(int id)
+        {
+            //objective: communicate with our user data api to retrieve one User
+            //curl https://localhost:44360/api/UserData/FindUser/{id}
+            string url = "UserData/FindUser/" + id;
+            HttpResponseMessage response = client.GetAsync(url).Result;
+
+            User User = response.Content.ReadAsAsync<User>().Result;
+
+            return View(User);
+        }
+
+        // POST: User/Delete/5
+        [HttpPost]
+        public ActionResult Delete(int id)
+        {
+            string url = "RestaurantData/DeleteRestaurantsByUserId/" + id;
+            HttpResponseMessage response = client.PostAsync(url, null).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                url = "RestaurantsFolderData/DeleteRestaurantsFoldersByUserId/" + id;
+                response = client.PostAsync(url, null).Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    url = "UserData/DeleteUser/" + id;
+                    response = client.PostAsync(url, null).Result;
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return RedirectToAction("List");
+                    }
+                    else
+                    {
+                        return RedirectToAction("error");
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("error");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Error");
+            }
+        }
     }
 }

@@ -320,6 +320,8 @@
     <Content Include="Views\Restaurant\Edit.cshtml" />
     <Content Include="Views\RestaurantsFolder\DeleteConfirm.cshtml" />
     <Content Include="Views\RestaurantsFolder\Edit.cshtml" />
+    <Content Include="Views\User\Edit.cshtml" />
+    <Content Include="Views\User\DeleteConfirm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -103,10 +103,8 @@ namespace PassionProject_YejunSon.Controllers
             {
                 return BadRequest(ModelState);
             }
-            Debug.WriteLine(RestaurantsFolder);
             db.RestaurantsFolders.Add(RestaurantsFolder);
             db.SaveChanges();
-            Debug.WriteLine(RestaurantsFolder.RestaurantsFolderId);
             return CreatedAtRoute("DefaultApi", new { id = RestaurantsFolder.RestaurantsFolderId }, RestaurantsFolder);
         }
 
@@ -219,6 +217,34 @@ namespace PassionProject_YejunSon.Controllers
         }
 
         /// <summary>
+        /// Deletes all RestaurantsFolders for a specific user from the system by their UserId.
+        /// </summary>
+        /// <param name="userId">The UserId of the RestaurantsFolders to be deleted</param>
+        /// <returns>
+        /// HEADER: 200 (OK)
+        /// or
+        /// HEADER: 404 (NOT FOUND)
+        /// </returns>
+        /// <example>
+        /// POST: api/RestaurantsFolderData/DeleteRestaurantsFoldersByUserId/2
+        /// FORM DATA: (empty)
+        /// </example>
+        [ResponseType(typeof(RestaurantsFolder))]
+        [HttpPost]
+        [Route("api/RestaurantsFolderData/DeleteRestaurantsFoldersByUserId/{userId}")]
+        public IHttpActionResult DeleteRestaurantsFoldersByUserId(int userId)
+        {
+            // Find all RestaurantsFolders with the specified UserId
+            List<RestaurantsFolder> foldersToDelete = db.RestaurantsFolders.Where(rf => rf.UserId == userId).ToList();
+
+            // Remove all found RestaurantsFolders
+            db.RestaurantsFolders.RemoveRange(foldersToDelete);
+            db.SaveChanges();
+
+            return Ok();
+        }
+
+        /// <summary>
         /// Updates a particular RestaurantsFolder in the system with POST Data input
         /// </summary>
         /// <param name="id">Represents the RestaurantsFolder ID primary key</param>
@@ -238,9 +264,6 @@ namespace PassionProject_YejunSon.Controllers
         [HttpPost]
         public IHttpActionResult UpdateRestaurantsFolder(int id, RestaurantsFolder RestaurantsFolder)
         {
-            Debug.WriteLine("111111111111");
-            Debug.WriteLine(id);
-            Debug.WriteLine(RestaurantsFolder.RestaurantsFolderId);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -250,10 +273,7 @@ namespace PassionProject_YejunSon.Controllers
                 return BadRequest();
             }
             
-            
-            Debug.WriteLine("2222222222222");
             db.Entry(RestaurantsFolder).State = EntityState.Modified;
-            Debug.WriteLine("333333333333");
             try
             {
                 db.SaveChanges();

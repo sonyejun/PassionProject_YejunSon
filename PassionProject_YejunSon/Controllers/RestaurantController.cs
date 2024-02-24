@@ -30,8 +30,7 @@ namespace PassionProject_YejunSon.Controllers
             string url = "RestaurantData/FindRestaurant/" + id + "/" + id2;
             HttpResponseMessage response = client.GetAsync(url).Result;
             RestaurantDto RestaurantDto = response.Content.ReadAsAsync<RestaurantDto>().Result;
-            Debug.WriteLine(RestaurantDto.RestaurantName);
-            Debug.WriteLine(RestaurantDto.Location);
+
             return View(RestaurantDto);
         }
 

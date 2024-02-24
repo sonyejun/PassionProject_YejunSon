@@ -186,7 +186,7 @@ namespace PassionProject_YejunSon.Controllers
             string url = "RestaurantsFolderData/UpdateRestaurantsFolder/" + id;
             string jsonpayload = jss.Serialize(RestaurantsFolder);
             HttpContent content = new StringContent(jsonpayload);
-            Debug.WriteLine(jsonpayload);
+
             content.Headers.ContentType.MediaType = "application/json";
             HttpResponseMessage response = client.PostAsync(url, content).Result;
 

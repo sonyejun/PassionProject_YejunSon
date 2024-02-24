@@ -4,11 +4,30 @@
     ViewBag.Title = "List";
 }
 
-<h2>Users List</h2>
 <a href="/user/new" style="font-size: 20px">Create User</a>
-@foreach(var user in Model)
-{   
-    <ul>
-        <li><a href="/User/Details/@user.UserId">@user.FirstName @user.LastName</a></li>
-    </ul>
-}
+<h2>Users List</h2>
+<table>
+    <thead>
+        <tr>
+            <th>User Name</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>
+                    <a href="/User/Details/@user.UserId">@user.FirstName @user.LastName</a>
+                </td>
+                <td>
+                    <a href="/User/Edit/@user.UserId" class="btn btn-warning">Edit</a>
+                </td>
+                <td>
+                    <a href="/User/DeleteConfirm/@user.UserId" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

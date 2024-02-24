@@ -181,6 +181,34 @@ namespace PassionProject_YejunSon.Controllers
         }
 
         /// <summary>
+        /// Deletes all Restaurants for a specific user from the system by their UserId.
+        /// </summary>
+        /// <param name="userId">The UserId of the Restaurants to be deleted</param>
+        /// <returns>
+        /// HEADER: 200 (OK)
+        /// or
+        /// HEADER: 404 (NOT FOUND)
+        /// </returns>
+        /// <example>
+        /// POST: api/RestaurantData/DeleteRestaurantsByUserId/2
+        /// FORM DATA: (empty)
+        /// </example>
+        [ResponseType(typeof(Restaurant))]
+        [HttpPost]
+        [Route("api/RestaurantData/DeleteRestaurantsByUserId/{userId}")]
+        public IHttpActionResult DeleteRestaurantsByUserId(int userId)
+        {
+            // Find all restaurants with the specified UserId
+            List<Restaurant> restaurantsToDelete = db.Restaurants.Where(r => r.UserId == userId).ToList();
+
+            // Remove all found restaurants
+            db.Restaurants.RemoveRange(restaurantsToDelete);
+            db.SaveChanges();
+
+            return Ok();
+        }
+
+        /// <summary>
         /// Updates a particular Restaurant in the system with POST Data input
         /// </summary>
         /// <param name="id">Represents the Restaurant ID primary key</param>

@@ -94,5 +94,96 @@ namespace PassionProject_YejunSon.Controllers
 
             return Ok(user);
         }
+
+        /// <summary>
+        /// Updates a particular User in the system with POST Data input
+        /// </summary>
+        /// <param name="id">Users the User ID primary key</param>
+        /// <param name="User">JSON FORM DATA of a User</param>
+        /// <returns>
+        /// HEADER: 204 (Success, No Content Response)
+        /// or
+        /// HEADER: 400 (Bad Request)
+        /// or
+        /// HEADER: 404 (Not Found)
+        /// </returns>
+        /// <example>
+        /// POST: api/UserData/UpdateUser/5
+        /// FORM DATA: User JSON Object
+        /// </example>
+        [ResponseType(typeof(void))]
+        [HttpPost]
+        public IHttpActionResult UpdateUser(int id, User User)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            if (id != User.UserId)
+            {
+                return BadRequest();
+            }
+
+            db.Entry(User).State = EntityState.Modified;
+
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!UserExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
+        /// <summary>
+        /// Deletes a User from the system by it's ID.
+        /// </summary>
+        /// <param name="id">The primary key of the User</param>
+        /// <returns>
+        /// HEADER: 200 (OK)
+        /// or
+        /// HEADER: 404 (NOT FOUND)
+        /// </returns>
+        /// <example>
+        /// POST: api/UserData/DeleteUser/5
+        /// FORM DATA: (empty)
+        /// </example>
+        [ResponseType(typeof(User))]
+        [HttpPost]
+        public IHttpActionResult DeleteUser(int id)
+        {
+            User User = db.Users.Find(id);
+            if (User == null)
+            {
+                return NotFound();
+            }
+
+            db.Users.Remove(User);
+            db.SaveChanges();
+
+            return Ok();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+        private bool UserExists(int id)
+        {
+            return db.Users.Count(e => e.UserId == id) > 0;
+        }
     }
 }
